@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html"/>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="styles.css">
+    <title>Fuzzy Movies</title>
+    <script type="text/javascript">
+      var search_endpoint = "${search_lambda_url}"
+    </script>
+    <script src="search.js"></script>
+</head>
+<body>
+  <h1>Fuzzy Movies</h1>
+  <input id="search" autocomplete="off" placeholder="Search">
+  <div id="results"></div>
+  <p id="noresults">Could not find any results...</p>
+  <p id="loading">Getting results...</p>
+</body>
+</html>
