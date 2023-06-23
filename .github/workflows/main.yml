@@ -29,6 +29,8 @@ jobs:
           python-version: '3.9'
 
       - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.4.5
       - name: Setup tflocal
         run: |
           pip install terraform-local
