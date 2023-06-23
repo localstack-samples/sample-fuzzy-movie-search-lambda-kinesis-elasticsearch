@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # fail on errors
 set -eo pipefail
+# for DEBUGGING, remove
+set -x 
 # enable alias in script
 shopt -s expand_aliases
 
