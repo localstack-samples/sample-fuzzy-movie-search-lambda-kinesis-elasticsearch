@@ -33,13 +33,13 @@ grep -v '^{ "index"' $temp_dir/sample-movies.bulk > $temp_dir/sample-movies-proc
 mv $temp_dir/sample-movies-processed.bulk $temp_dir/sample-movies.bulk
 
 echo "Invoking function for each movie..."
-cat $temp_dir/sample-movies.bulk | while read line
+while read line
 do
    echo -n "."
    echo $line | curl -s -X POST $ingest_function_url \
         -H 'Content-Type: application/json' \
         -d @- > /dev/null
-done
+done < $temp_dir/sample-movies.bulk
 
 echo ""
 echo "Testing a search query:"
