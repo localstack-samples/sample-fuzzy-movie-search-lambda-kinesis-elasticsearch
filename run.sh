@@ -27,7 +27,8 @@ unzip $temp_dir/sample-movies.zip -d $temp_dir/
 # remove the bulk insert instructions (lines starting with index info) from the bulk import file
 # (we want to stream the data in there, instead of using the bulk import)
 echo "Pre-processing Movie Dataset..."
-sed -i '/^{ "index"/d' $temp_dir/sample-movies.bulk
+grep -v '^{ "index"' $temp_dir/sample-movies.bulk > $temp_dir/sample-movies-processed.bulk
+mv $temp_dir/sample-movies-processed.bulk $temp_dir/sample-movies.bulk
 
 echo "Invoking function for each movie..."
 cat $temp_dir/sample-movies.bulk | while read line
@@ -42,7 +43,7 @@ echo ""
 echo "Testing a search query:"
 
 # Send a sample fuzzy query
-curl -X POST $elasticsearch_endpoint/movies/_search -H "Content-Type: application/json" -d \
+result=$(curl -X POST $elasticsearch_endpoint/movies/_search -H "Content-Type: application/json" -d \
  '{
    "query": {
      "multi_match": {
@@ -52,4 +53,12 @@ curl -X POST $elasticsearch_endpoint/movies/_search -H "Content-Type: applicatio
        "type": "best_fields"
      }
    }
- }' | jq
+ }')
+echo $result | jq
+
+# Rudimentary smoke test
+hits=$(echo $result | jq .hits.total.value)
+if [[ $hits -lt 1 ]]; then
+  echo "We have no hits on our query."
+  exit 1
+fi
