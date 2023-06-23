@@ -6,16 +6,16 @@ shopt -s expand_aliases
 
 if [ $# -eq 1 ] && [ $1 = "aws" ]; then
   echo "Deploying on AWS."
+  alias awslocal='aws'
+  alias tflocal='terraform'
 else
   echo "Deploying on LocalStack."
-  alias aws='awslocal'
-  alias terraform='tflocal'
 fi
 
 # Start deployment
-terraform init; terraform plan; terraform apply --auto-approve
-ingest_function_url=$(terraform output --raw ingest_lambda_url)
-elasticsearch_endpoint=$(terraform output --raw elasticsearch_endpoint)
+tflocal init; tflocal plan; tflocal apply --auto-approve
+ingest_function_url=$(tflocal output --raw ingest_lambda_url)
+elasticsearch_endpoint=$(tflocal output --raw elasticsearch_endpoint)
 
 # download the dataset
 temp_dir=$(mktemp --directory)
