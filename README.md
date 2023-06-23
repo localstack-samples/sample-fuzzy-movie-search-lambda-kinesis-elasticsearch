@@ -115,6 +115,7 @@ If e.g. you search for "Quentis", a misspelling of "Quentin", you should see ent
 The localstack logs sometimes show error message in regards to the firehose propagation.
 While this might reduce the size of the database to some degree, it is still be sufficient for demonstration purposes.
 
+
 ## Contributing
 
 We appreciate your interest in contributing to our project and are always looking for new ways to improve the developer experience. We welcome feedback, bug reports, and even feature ideas from the community.

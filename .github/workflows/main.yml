@@ -19,8 +19,7 @@ jobs:
     name: Setup fuzzy movie application
     runs-on: ubuntu-latest
     steps:
-      - uses: hashicorp/setup-terraform@v2
-      
+
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -29,40 +28,32 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Setup Terraform
-      
+      - uses: hashicorp/setup-terraform@v2
+      - name: Setup tflocal
         run: |
           pip install terraform-local
-          samlocal --help
 
       - name: Start LocalStack
         env:
           LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
-          DNS_ADDRESS: 0
         run: |
           pip install localstack awscli-local[ver1]
-          pip install terraform-local
           docker pull localstack/localstack-pro:latest
           # Start LocalStack in the background
           DEBUG=1 localstack start -d
-          # Wait 30 seconds for the LocalStack container to become ready before timing out
+          # Wait 15 seconds for the LocalStack container to become ready before timing out
           echo "Waiting for LocalStack startup..."
           localstack wait -t 15
           echo "Startup complete"
 
-      - name: Build the SAM application
-        run: samlocal build
-
-      - name: Deploy the SAM application
-        run: samlocal deploy --resolve-s3 --no-confirm-changeset
-      
-      - name: List the resources
+      - name: Deploy the ressources
         run: |
-          awslocal sqs list-queues
-          awslocal sns list-topics
-          awslocal dynamodb list-tables
-          awslocal lambda list-functions
-          awslocal s3 ls
+          terraform init
+          terraform plan
+          terraform apply --auto-approve
+      
+      - name: Run the application
+        run: ./run.sh
 
       # - name: Send a Slack notification
       #   if: failure() || github.event_name != 'pull_request'
