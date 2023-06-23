@@ -36,12 +36,12 @@ jobs:
           pip install terraform-local
 
         
-      - name: Add dummy profile credentials to ~/.aws/credentials
-        run: |
-          aws configure set aws_access_key_id dummy
-          aws configure set aws_secret_access_key dummy
-          aws configure set region us-east-1
-          aws configure set output dummy
+    #   - name: Add dummy profile credentials to ~/.aws/credentials
+    #     run: |
+    #       aws configure set aws_access_key_id dummy
+    #       aws configure set aws_secret_access_key dummy
+    #       aws configure set region us-east-1
+    #       aws configure set output dummy
 
 
 
@@ -57,13 +57,6 @@ jobs:
           echo "Waiting for LocalStack startup..."
           localstack wait -t 15
           echo "Startup complete"
-
-    
-      - name: Deploy the ressources
-        run: |
-          terraform init
-          terraform plan
-          terraform apply --auto-approve
       
       - name: Run the application
         run: ./run.sh
