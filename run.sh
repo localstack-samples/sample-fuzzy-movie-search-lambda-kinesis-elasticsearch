@@ -42,7 +42,18 @@ done < $temp_dir/sample-movies.bulk
 echo ""
 echo "Testing a search query:"
 
-echo $elasticsearch_endpoint/movies/_search
+echo ö/$elasticsearch_endpoint/ö/movies/_search
+echo  curl -X POST $elasticsearch_endpoint/movies/_search -H "Content-Type: application/json" -d \
+ '{
+   "query": {
+     "multi_match": {
+       "fields":  [ "title", "directors", "actors" ],
+       "query":     "Tarantino",
+       "fuzziness": "AUTO",
+       "type": "best_fields"
+     }
+   }
+ }'
 # Send a sample fuzzy query
 result=$(curl -X POST $elasticsearch_endpoint/movies/_search -H "Content-Type: application/json" -d \
  '{

@@ -74,14 +74,14 @@ jobs:
       #   env:
       #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
-      # - name: Generate a Diagnostic Report
-      #   if: failure()
-      #   run: |
-      #     curl -s localhost:4566/_localstack/diagnose | gzip -cf > diagnose.json.gz
+      - name: Generate a Diagnostic Report
+        if: failure()
+        run: |
+          curl -s localhost:4566/_localstack/diagnose | gzip -cf > diagnose.json.gz
 
-      # - name: Upload the Diagnostic Report
-      #   if: failure()
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: diagnose.json.gz
-      #     path: ./diagnose.json.gz
+      - name: Upload the Diagnostic Report
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: diagnose.json.gz
+          path: ./diagnose.json.gz
