@@ -42,6 +42,7 @@ done < $temp_dir/sample-movies.bulk
 echo ""
 echo "Testing a search query:"
 
+echo $elasticsearch_endpoint/movies/_search
 # Send a sample fuzzy query
 result=$(curl -X POST $elasticsearch_endpoint/movies/_search -H "Content-Type: application/json" -d \
  '{
