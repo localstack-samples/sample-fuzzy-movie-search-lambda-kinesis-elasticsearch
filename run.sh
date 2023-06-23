@@ -16,6 +16,13 @@ fi
 tflocal init; tflocal plan; tflocal apply --auto-approve
 ingest_function_url=$(tflocal output --raw ingest_lambda_url)
 elasticsearch_endpoint=$(tflocal output --raw elasticsearch_endpoint)
+echo show terraform output ... 
+echo $ingest_function_url
+echo $elasticsearch_endpoint
+echo $(ingest_function_url)
+echo $(elasticsearch_endpoint)
+echo $$ingest_function_url
+echo $$elasticsearch_endpoint
 
 # download the dataset
 temp_dir=$(mktemp --directory)
