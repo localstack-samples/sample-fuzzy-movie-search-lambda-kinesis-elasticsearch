@@ -14,8 +14,8 @@ fi
 
 # Start deployment
 tflocal init; tflocal plan; tflocal apply --auto-approve
-ingest_function_url=$(tflocal output --raw ingest_lambda_url)
-elasticsearch_endpoint=$(tflocal output --raw elasticsearch_endpoint)
+ingest_function_url=$(tflocal output --raw ingest_lambda_url | cat)
+elasticsearch_endpoint=$(tflocal output --raw elasticsearch_endpoint | cat)
 echo show terraform output ... 
 echo $ingest_function_url
 echo $elasticsearch_endpoint
