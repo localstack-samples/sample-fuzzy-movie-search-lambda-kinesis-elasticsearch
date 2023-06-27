@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# fail on errors, disabled for debugging action pipeline
-# set -eo pipefail
+# fail on errors
+set -eo pipefail
 # enable alias in script
 shopt -s expand_aliases
 
@@ -14,15 +14,8 @@ fi
 
 # Start deployment
 tflocal init; tflocal plan; tflocal apply --auto-approve
-ingest_function_url=$(tflocal output --raw ingest_lambda_url | cat)
-elasticsearch_endpoint=$(tflocal output --raw elasticsearch_endpoint | cat)
-echo show terraform output ... 
-echo $ingest_function_url
-echo $elasticsearch_endpoint
-echo $(ingest_function_url)
-echo $(elasticsearch_endpoint)
-echo $$ingest_function_url
-echo $$elasticsearch_endpoint
+ingest_function_url=$(tflocal output --raw ingest_lambda_url)
+elasticsearch_endpoint=$(tflocal output --raw elasticsearch_endpoint)
 
 # download the dataset
 temp_dir=$(mktemp --directory)
@@ -48,19 +41,6 @@ done < $temp_dir/sample-movies.bulk
 
 echo ""
 echo "Testing a search query:"
-
-echo ö/$elasticsearch_endpoint/ö/movies/_search
-echo  curl -X POST $elasticsearch_endpoint/movies/_search -H "Content-Type: application/json" -d \
- '{
-   "query": {
-     "multi_match": {
-       "fields":  [ "title", "directors", "actors" ],
-       "query":     "Tarantino",
-       "fuzziness": "AUTO",
-       "type": "best_fields"
-     }
-   }
- }'
 # Send a sample fuzzy query
 result=$(curl -X POST $elasticsearch_endpoint/movies/_search -H "Content-Type: application/json" -d \
  '{
