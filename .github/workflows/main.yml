@@ -36,16 +36,6 @@ jobs:
         run: |
           pip install terraform-local
 
-        
-    #   - name: Add dummy profile credentials to ~/.aws/credentials
-    #     run: |
-    #       aws configure set aws_access_key_id dummy
-    #       aws configure set aws_secret_access_key dummy
-    #       aws configure set region us-east-1
-    #       aws configure set output dummy
-
-
-
       - name: Start LocalStack
         env:
           LOCALSTACK_API_KEY: ${{ secrets.LOCALSTACK_API_KEY }}
@@ -62,18 +52,18 @@ jobs:
       - name: Run the application
         run: ./run.sh
 
-      # - name: Send a Slack notification
-      #   if: failure() || github.event_name != 'pull_request'
-      #   uses: ravsamhq/notify-slack-action@v2
-      #   with:
-      #     status: ${{ job.status }}
-      #     token: ${{ secrets.GITHUB_TOKEN }}
-      #     notification_title: "{workflow} has {status_message}"
-      #     message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
-      #     footer: "Linked Repo <{repo_url}|{repo}> | <{run_url}|View Workflow run>"
-      #     notify_when: "failure"
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Send a Slack notification
+        if: failure() || github.event_name != 'pull_request'
+        uses: ravsamhq/notify-slack-action@v2
+        with:
+          status: ${{ job.status }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          notification_title: "{workflow} has {status_message}"
+          message_format: "{emoji} *{workflow}* {status_message} in <{repo_url}|{repo}>"
+          footer: "Linked Repo <{repo_url}|{repo}> | <{run_url}|View Workflow run>"
+          notify_when: "failure"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
       - name: Generate a Diagnostic Report
         if: failure()
