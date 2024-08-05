@@ -38,10 +38,10 @@ The following diagram shows the architecture that this sample application builds
 - [Terraform](https://docs.localstack.cloud/user-guide/integrations/terraform/) with the [`tflocal`](https://github.com/localstack/terraform-local) installed.
 - [AWS CLI](https://docs.localstack.cloud/user-guide/integrations/aws-cli/) with the [`awslocal` wrapper](https://docs.localstack.cloud/user-guide/integrations/aws-cli/#localstack-aws-cli-awslocal).
 
-Start LocalStack Pro with the `LOCALSTACK_API_KEY` pre-configured:
+Start LocalStack Pro with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
 
 ```shell
-export LOCALSTACK_API_KEY=<your-api-key>
+export LOCALSTACK_AUTH_TOKEN=<your-api-key>
 docker compose up -d
 ```
 
