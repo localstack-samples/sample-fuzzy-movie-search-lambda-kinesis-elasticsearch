@@ -1,49 +1,21 @@
 #!/usr/bin/env bash
 # fail on errors
 set -eo pipefail
+# enable alias in script
+shopt -s expand_aliases
 
-terraform_cmd="terraform"
-localstack_provider_override_file=""
-
-if [[ $# -eq 1 ]] && [[ $1 = "aws" ]]; then
+if [ $# -eq 1 ] && [ $1 = "aws" ]; then
   echo "Deploying on AWS."
+  alias awslocal='aws'
+  alias tflocal='terraform'
 else
   echo "Deploying on LocalStack."
-  # Cleanup stale provider files from previous failed runs.
-  rm -f localstack_providers_override.tf localstack_provider_override.auto.tf
-
-  localstack_provider_override_file="$(pwd)/localstack_provider_override.auto.tf"
-  cat > "$localstack_provider_override_file" <<'EOF'
-provider "aws" {
-  access_key                  = "test"
-  secret_key                  = "test"
-  region                      = "us-east-1"
-  skip_credentials_validation = true
-  skip_metadata_api_check     = true
-  s3_use_path_style           = true
-
-  endpoints {
-    iam           = "http://localhost:4566"
-    sts           = "http://localhost:4566"
-    lambda        = "http://localhost:4566"
-    kinesis       = "http://localhost:4566"
-    firehose      = "http://localhost:4566"
-    elasticsearch = "http://localhost:4566"
-    s3            = "http://localhost:4566"
-  }
-}
-EOF
-
-  cleanup_localstack_provider_override() {
-    rm -f "$localstack_provider_override_file"
-  }
-  trap cleanup_localstack_provider_override EXIT
 fi
 
 # Start deployment
-$terraform_cmd init; $terraform_cmd plan; $terraform_cmd apply --auto-approve
-ingest_function_url=$($terraform_cmd output --raw ingest_lambda_url)
-elasticsearch_endpoint=$($terraform_cmd output --raw elasticsearch_endpoint)
+tflocal init; tflocal plan; tflocal apply --auto-approve
+ingest_function_url=$(tflocal output --raw ingest_lambda_url)
+elasticsearch_endpoint=$(tflocal output --raw elasticsearch_endpoint)
 
 # download the dataset
 temp_dir=$(mktemp --directory)

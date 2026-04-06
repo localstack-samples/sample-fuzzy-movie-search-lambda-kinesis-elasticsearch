@@ -30,7 +30,6 @@ jobs:
 
       - uses: hashicorp/setup-terraform@v2
         with:
-          terraform_version: 1.4.5
           terraform_wrapper: false
       - name: Setup tflocal
         run: |
