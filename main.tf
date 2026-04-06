@@ -209,11 +209,6 @@ resource "aws_kinesis_firehose_delivery_stream" "ingest_firehose_stream" {
   name        = "ingest-firehose-delivery-stream"
   destination = "elasticsearch"
 
-  s3_configuration {
-    role_arn           = aws_iam_role.firehose_role.arn
-    bucket_arn         = aws_s3_bucket.ingest_skipped_docs_bucket.arn
-  }
-
   kinesis_source_configuration {
     kinesis_stream_arn = aws_kinesis_stream.ingest_kinesis_stream.arn
     role_arn = aws_iam_role.firehose_role.arn
@@ -225,6 +220,11 @@ resource "aws_kinesis_firehose_delivery_stream" "ingest_firehose_stream" {
     index_name = "movies"
     buffering_interval = 60
     buffering_size = 1
+
+    s3_configuration {
+      role_arn   = aws_iam_role.firehose_role.arn
+      bucket_arn = aws_s3_bucket.ingest_skipped_docs_bucket.arn
+    }
   }
 }
 
