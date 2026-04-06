@@ -29,7 +29,7 @@ provider "aws" {
     kinesis       = "http://localhost:4566"
     firehose      = "http://localhost:4566"
     elasticsearch = "http://localhost:4566"
-    s3            = "http://s3.localhost.localstack.cloud:4566"
+    s3            = "http://localhost:4566"
   }
 }
 EOF
