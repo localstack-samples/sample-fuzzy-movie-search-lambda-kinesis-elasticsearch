@@ -35,10 +35,10 @@ The following diagram shows the architecture that this sample application builds
 
 ## Prerequisites
 
-- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) to activate LocalStack.
-- [`localstack` CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli).
-- [Terraform](https://docs.localstack.cloud/user-guide/integrations/terraform/) with the [`tflocal`](https://github.com/localstack/terraform-local) installed.
-- [AWS CLI](https://docs.localstack.cloud/user-guide/integrations/aws-cli/) with the [`awslocal` wrapper](https://docs.localstack.cloud/user-guide/integrations/aws-cli/#localstack-aws-cli-awslocal).
+- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/aws/getting-started/auth-token/) to activate LocalStack.
+- LocalStack with the [`lstk` CLI](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/).
+- [Terraform](https://docs.localstack.cloud/user-guide/integrations/terraform/) with the [`lstk tf` proxy](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/).
+- [AWS CLI](https://docs.localstack.cloud/user-guide/integrations/aws-cli/) with the [`lstk aws` proxy](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/).
 
 Start LocalStack Pro with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
 
