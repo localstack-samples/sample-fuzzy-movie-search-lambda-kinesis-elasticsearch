@@ -23,29 +23,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_wrapper: false
-      - name: Setup tflocal
-        run: |
-          pip install terraform-local
 
       - name: Start LocalStack
         env:
           LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
         run: |
-          pip install localstack awscli-local[ver1]
+          npm install -g @localstack/lstk
           docker pull localstack/localstack-pro:latest
           # Start LocalStack in the background
-          DEBUG=1 localstack start -d
-          # Wait 15 seconds for the LocalStack container to become ready before timing out
+          LOCALSTACK_DEBUG=1 lstk start
+          # Wait for the LocalStack container to become ready
           echo "Waiting for LocalStack startup..."
-          localstack wait -t 15
+          lstk status
           echo "Startup complete"
       
       - name: Run the application

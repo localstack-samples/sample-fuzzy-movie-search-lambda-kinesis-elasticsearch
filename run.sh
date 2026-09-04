@@ -1,21 +1,19 @@
 #!/usr/bin/env bash
 # fail on errors
 set -eo pipefail
-# enable alias in script
-shopt -s expand_aliases
 
 if [ $# -eq 1 ] && [ $1 = "aws" ]; then
   echo "Deploying on AWS."
-  alias awslocal='aws'
-  alias tflocal='terraform'
+  tf="terraform"
 else
   echo "Deploying on LocalStack."
+  tf="lstk tf"
 fi
 
 # Start deployment
-tflocal init; tflocal plan; tflocal apply --auto-approve
-ingest_function_url=$(tflocal output --raw ingest_lambda_url)
-elasticsearch_endpoint=$(tflocal output --raw elasticsearch_endpoint)
+$tf init; $tf plan; $tf apply --auto-approve
+ingest_function_url=$($tf output --raw ingest_lambda_url)
+elasticsearch_endpoint=$($tf output --raw elasticsearch_endpoint)
 
 # download the dataset
 temp_dir=$(mktemp --directory)
